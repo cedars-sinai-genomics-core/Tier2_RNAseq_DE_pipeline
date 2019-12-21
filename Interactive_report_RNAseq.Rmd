@@ -136,6 +136,7 @@ Number of DEGs (p_adj threshold)             | Optimized significance threshold
 >=2000 (p_adj<0.01)                          | p_adj < 0.01 and \|FC\|  >= 2
 [20,200) (p_adj<0.05)                        | p_adj < 0.1
 <20 (p_adj<0.05)                             | p < 0.05
+
 * `r dim(resSig)[1]` genes were identified as significant DEGs (`r name`; `r sig_DEGs`), where `r dim(subset(resSig, log2FC>=0))[1]` were upregulated and `r dim(subset(resSig, log2FC<0))[1]` were downregulated.
 * The table is showing all genes.  Please check CSV file for all details.
      + basemean = average expression value across all samples
@@ -150,7 +151,7 @@ datatable(format(resdata[, 1:5], digits=2, justify="centre"), caption = htmltool
 
 ### - Heatmap of DEGs across all samples
 * `r dim(dat.norm_2)[1]` genes with significant variances across the `r dim(dat.norm_2)[2]` samples were utilized to make the heatmap.
-*  zoom in to see gene names.
+*  Zoom in to see gene names.
 \
 \
 ```{r interactive_heatmap, echo=FALSE, message=FALSE, warning=FALSE, fig.height = 10, fig.width = 10}
@@ -166,7 +167,10 @@ datatable(format(resdata[, 1:5], digits=2, justify="centre"), caption = htmltool
 # zscore_data <- zscore_by_row(dat.norm)
 #calculate z-score
 colv=as.dendrogram(hclust(as.dist(1-cor(dat.norm_2))))
-rownames(dat.norm_2)<-matrix(unlist(strsplit(rownames(dat.norm_2),'[_]')),byrow=T,ncol=2)[,2]
+#split by "_" only works for ENSRNOG00000049517_Tnfaip3
+#rownames(dat.norm_2)<-matrix(unlist(strsplit(rownames(dat.norm_2),'[_]')),byrow=T,ncol=2)[,2]
+#split by the first "_", works for both ENSRNOG00000049517_Tnfaip3 ENSRNOG00000027002_NEWGENE_1310139
+rownames(dat.norm_2) <- matrix(unlist(strsplit(sub('(^[^_]+)_(.*)$', '\\1 \\2', rownames(dat.norm_2)), ' ')),byrow=T,ncol=2)[,2]
 rowv=as.dendrogram(hclust(as.dist(1-cor(t(dat.norm_2)))))
 #p <- heatmaply(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),k_col=2,Rowv=rowv,dendrogram='row',Colv=colv, scale="row",cexRow =0.5,trace="none",showticklabels=c(TRUE,FALSE),density.info="none",keysize=.8,key.xlab="")
 p <- heatmaply(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),k_col=2,labRow = NULL,Rowv=rowv,dendrogram='row',Colv=colv, scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="")
@@ -180,7 +184,7 @@ dev.off()
 
 ### - Volcano Plot
 * Volcano plot reporting adjusted p-value (−log10(p), y axis) as a function of log2 (fold change) between the groups (logFC, x axis).
-* Fold change(`r name`) of the expression level for a given gene was defined as the read counts of the gene in the `r comps[i,][2]` sample /the read counts in the `r comps[i,][3]` sample.
+* Fold change(`r name`) of the expression level for a given gene was defined as the read counts of the gene in the `r comps[i,][2]` sample divided by the read counts in the `r comps[i,][3]` sample.
 * Genes that are identified as significant DEGs with `r sig_DEGs` are colored in red.
 \
 \
@@ -198,7 +202,7 @@ if (n1 >= 2000) {
     resdata_1$Colour[resdata_1$p_adj < 0.01]="Significant(padj<0.01)"
     resdata_1$Colour[ resdata_1$p_adj >= 0.01]="Non-significant"
     } else {
-      resdata_1$Colour[(abs(resdata_1$log2FC) >= 1) & (resdata_1$p_adj < 0.01)]="Significant(padj<0.05,FC>2)"
+      resdata_1$Colour[(abs(resdata_1$log2FC) >= 1) & (resdata_1$p_adj < 0.01)]="Significant(padj<0.01,|FC|>=2)"
       resdata_1$Colour[(abs(resdata_1$log2FC) < 1) | (resdata_1$p_adj >= 0.01)]="Non-significant"
     }
   }
@@ -221,7 +225,7 @@ pdf(file=paste0(out_folder,name,"_Volcano.pdf"),14,10)
 resdata_1$label<-""  #####this is to save the label of your interested genes
 p<-ggplot(resdata_1,aes(x=log2FC,y=negative_Log10_padj,label=label))
 p<-p+geom_point(aes(color = resdata_1$Colour), size = 0.8)+scale_color_manual(values = c("black", "red"))
-p<-p+theme(panel.background = element_rect(fill = "white", colour = "black"))+geom_label_repel(point.padding = unit(0.1, "lines"))+labs(x = paste0("log2FoldChange (", name, ")"), y = "-log10(adjusted p-value)", title = "M -> MC", color = "")
+p<-p+theme(panel.background = element_rect(fill = "white", colour = "black"))+geom_label_repel(point.padding = unit(0.1, "lines"))+labs(x = paste0("log2FoldChange (", name, ")"), y = "-log10(adjusted p-value)", title = name, color = "")
 p
 dev.off()
 ```
@@ -248,8 +252,8 @@ if (n1 >= 2000) {
     resdata_1$Colour[(resdata_1$log2FC < 0 & resdata_1$p_adj <  0.01)]="Significant DownR (p_adj<0.01)"
     resdata_1$Colour[ resdata_1$p_adj >= 0.01]="Non-significant"
     } else {
-      resdata_1$Colour[(resdata_1$log2FC >= 1 & resdata_1$p_adj <  0.01)]="Significant UpR(p_adj<0.01,FC>2)"
-      resdata_1$Colour[(resdata_1$log2FC <= -1 & resdata_1$p_adj <  0.01)]="Significant DownR(p_adj<0.01,FC>2)"
+      resdata_1$Colour[(resdata_1$log2FC >= 1 & resdata_1$p_adj <  0.01)]="Significant UpR(p_adj<0.01,FC>=2)"
+      resdata_1$Colour[(resdata_1$log2FC <= -1 & resdata_1$p_adj <  0.01)]="Significant DownR(p_adj<0.01,FC<=-2)"
       resdata_1$Colour[(abs(resdata_1$log2FC) < 1) | (resdata_1$p_adj >= 0.01)]="Non-significant"
     }
   }
