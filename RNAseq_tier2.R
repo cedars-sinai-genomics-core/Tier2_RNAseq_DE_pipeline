@@ -123,8 +123,8 @@ for (i in 1:dim(comps)[1]) {
     sig_DEGs <- "p_adj < 0.1"
   }
   if (n1 < 20) {
-    resSig=subset(eval(parse(text=paste0("resdata", i))), pvalue<0.1)
-    write.csv(resSig,file=paste(name,"_DEGs_p0.1.csv",sep=''), row.names=F)
+    resSig=subset(eval(parse(text=paste0("resdata", i))), pvalue<0.05)
+    write.csv(resSig,file=paste(name,"_DEGs_p0.05.csv",sep=''), row.names=F)
     sig_DEGs <- "p < 0.05"
   }
   rmarkdown::render("/home/genomics/genomics/apps/RNAseq_tier2/Interactive_report_RNAseq.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"),output_dir="./")
