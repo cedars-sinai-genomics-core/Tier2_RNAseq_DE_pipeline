@@ -30,7 +30,7 @@ comps <- as.matrix(a3)
 
 colnames(a1) <- as.matrix(a2)[,2]
 data<-a1[-grep("ERCC-",rownames(a1)),]
-countdataraw=round(data[rowSums(a1)>0,])
+countdataraw=round(data[rowSums(data)>0,])
 countdata<-as.matrix(countdataraw)
 dim(countdata)
 
