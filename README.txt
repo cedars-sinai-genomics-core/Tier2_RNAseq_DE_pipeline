@@ -9,4 +9,9 @@ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh count.csv samp
 bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh count.csv sample_info.csv comparison.csv project_ID
 
 
+A few things to check before running the pipeline:  
+1. The 1st column of sample_info file is colnames of COUNTS file.  
+2. COUNTS file's column names should have same order as the 1st column of sample_info file.  
+3. In sample_info file, Group_info (i.e. 3rd column) should be part of Sample_Name (i.e. 2nd column). Because Group_info will be used to grep what samples to include in the analysis.   
+For example, if Group_info is G1 and Sample_Name should be G1_S1 or S1_G1. If Sample_Name is S1_Group1 or Group1_S1, no results will be generated.  
 
