@@ -64,12 +64,14 @@ plot.PCA(res.pca,axes=c(2,3),habillage=ncol(dat.norm),cex=2,label='none')
 dev.off()
 #dev.off()
 
-out_folder <- paste0(getwd(),"/")
+#out_folder <- paste0(getwd(),"/")
 ##################################### get DEGs list, interative plot, and  pathway plot for each comparison ##############################################
 # read how many comparisons are needed and do analysis for each comparison and save results as res1, res2, res3...
 
 for (i in 1:dim(comps)[1]) {
   name <- paste0(comps[i,][2], "_vs_", comps[i,][3])  #"M_vs_MC"
+  dir.create(name)
+  out_folder <- paste0(getwd(),"/",name,"/")
   pattern <- c(comps[i,][2], comps[i,][3])
   countdata_1 <- countdata[, grep(paste(pattern, collapse="|"), colnames(countdata), value = TRUE)]
   condition<-factor(as.matrix(a2)[,3])
