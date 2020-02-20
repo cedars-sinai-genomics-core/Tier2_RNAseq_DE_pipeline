@@ -11,7 +11,7 @@ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh count.csv samp
 For example: 
 #pvalue<0.05 was used as threshold
 bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh count.csv sample_info.csv comparison.csv project_ID "pvalue<0.05" 1
-#p_adj<0.01 amd FC>=2 were used as threshold
+#p_adj<0.01 and FC>=2 were used as threshold
 bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh count.csv sample_info.csv comparison.csv project_ID "p_adj<0.01" 2
 
 # for FFPE samples
