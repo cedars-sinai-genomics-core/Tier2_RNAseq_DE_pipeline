@@ -9,7 +9,7 @@
 display_usage() {
 	echo -e "NAME:\n  RNAseq_analysis."
 	echo -e "\nDESCRIPTION:\n   This pipeline will use COUNT file to do doenstream differentially expressed genes (DEGs) analysis."
-	echo -e "\nUsage:\n   bash RNAseq_analysis.sh Count_file.csv Sample_info.csv comparisons.csv "
+	echo -e "\nUsage:\n   bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh Count_file.csv Sample_info.csv comparisons.csv "
     
     echo "Input options:"
     echo "   -h|--help    show this help"
