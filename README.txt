@@ -1,12 +1,19 @@
 # get help manual
 bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh -h 
+bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh -h
 bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh -h
 
 # 4 inputs are required for the script
 bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh count.csv sample_info.csv comparison.csv project_ID
 
+# Running pipeline using fixed cutoff for all comparisons
+# 6 inputs are requried for the script
+bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh count.csv sample_info.csv comparison.csv project_ID "pvalue<0.05" "1"
+
+
 # for FFPE samples
 bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh count.csv sample_info.csv comparison.csv project_ID
+
 
 
 A few things to check before running the pipeline:  
