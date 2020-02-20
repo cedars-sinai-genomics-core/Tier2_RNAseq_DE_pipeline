@@ -173,11 +173,25 @@ colv=as.dendrogram(hclust(as.dist(1-cor(dat.norm_2))))
 rownames(dat.norm_2) <- matrix(unlist(strsplit(sub('(^[^_]+)_(.*)$', '\\1 \\2', rownames(dat.norm_2)), ' ')),byrow=T,ncol=2)[,2]
 rowv=as.dendrogram(hclust(as.dist(1-cor(t(dat.norm_2)))))
 #p <- heatmaply(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),k_col=2,Rowv=rowv,dendrogram='row',Colv=colv, scale="row",cexRow =0.5,trace="none",showticklabels=c(TRUE,FALSE),density.info="none",keysize=.8,key.xlab="")
-p <- heatmaply(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),k_col=2,labRow = NULL,Rowv=rowv,dendrogram='row',Colv=colv, scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="")
+
+#############################set limit from -2 to 2###############################
+temp <- scale(t(dat.norm_2))
+temp[temp>2] <- 2
+temp[temp< -2] <- -2
+p <- heatmaply(t(temp),col=colorRampPalette(c("blue","black","yellow"))(256),k_col=2,labRow = NULL,Rowv=rowv,dendrogram='row',Colv=colv, scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="")
+#####################################################
+
+#p <- heatmaply(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),k_col=2,labRow = NULL,Rowv=rowv,dendrogram='row',Colv=colv, scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="")
 p
 # export heatmap as PDF
 pdf(file=paste(out_folder,name,"_heatmap.pdf",sep=''),20,25)
-heatmap.2(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),labRow = FALSE,dendrogram='row',Rowv=rowv,Colv=colnames(dat.norm_2),scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="",margins=c(15,14))
+#heatmap.2(dat.norm_2,col=colorRampPalette(c("blue","black","yellow"))(256),labRow = FALSE,dendrogram='row',Rowv=rowv,Colv=colnames(dat.norm_2),scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="",margins=c(15,14))
+
+######################### set limit from -2 to 3 ##########################
+colors = c(seq(-2,-0.11,by=0.03),seq(-0.08,0.13,by=0.03),seq(0.16,2,by=0.03))
+my_palette <- colorRampPalette(c("blue", "black", "yellow"))(length(colors)-1)
+heatmap.2(dat.norm_2,col=my_palette,labRow = FALSE,dendrogram='row',Rowv=rowv,Colv=colnames(dat.norm_2),scale="row",cexRow =0.5,trace="none",density.info="none",keysize=.8,key.xlab="",margins=c(15,14),breaks=colors)
+
 dev.off()
 ```
 
