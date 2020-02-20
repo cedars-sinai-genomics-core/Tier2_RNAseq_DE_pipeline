@@ -27,6 +27,10 @@ a3=read.table(comparison,sep=',',header=F)
 #a3=read.table("AP-5782--11--08--2018_comparisons.csv",sep=',',header=F)
 #project = "AP-5782--11--08--2018"
 comps <- as.matrix(a3)
+# sort a2 by group and then by sample name
+a2 <- a2[order( a2[,3], a2[,2] ),]
+
+a1<-a1[,as.vector(a2[,1])]
 
 colnames(a1) <- as.matrix(a2)[,2]
 data<-a1[-grep("ERCC-",rownames(a1)),]
@@ -39,6 +43,12 @@ condition<-factor(as.matrix(a2)[,3])
 coldata <- data.frame(row.names=colnames(countdata), condition)
 dds <- DESeqDataSetFromMatrix(countData=countdata, colData=coldata, design=~condition)
 dds=DESeq(dds,minReplicatesForReplace = 50)
+
+#ubstitute DESeq() with more iterations
+#dds <- estimateSizeFactors(dds)
+#dds <- estimateDispersions(dds)
+#dds <- nbinomWaldTest(dds, maxit = 500)
+
 norm=counts(dds,normalized = T)
 
 #### get PCA output for all samples as PDF files ####
@@ -86,13 +96,13 @@ for (i in 1:dim(comps)[1]) {
   dat.norm_1<-t(assay(rld_1)[select_1, ])
   dat.norm_1<-data.frame(dat.norm_1,condition)
   res.pca_1=PCA(dat.norm_1,ncp=5,scale.unit=T,graph=F,quali.sup=ncol(dat.norm_1))
-  pdf(paste(name,"_PCA_top500.pdf",sep=""),16,12)
-  plot.PCA(res.pca_1,axes=c(1,2),habillage=ncol(dat.norm),cex=1)
-  plot.PCA(res.pca_1,axes=c(1,2),habillage=ncol(dat.norm),cex=2,label='none')
-  plot.PCA(res.pca_1,axes=c(1,3),habillage=ncol(dat.norm),cex=1)
-  plot.PCA(res.pca_1,axes=c(1,3),habillage=ncol(dat.norm),cex=2,label='none')
-  plot.PCA(res.pca_1,axes=c(2,3),habillage=ncol(dat.norm),cex=1)
-  plot.PCA(res.pca_1,axes=c(2,3),habillage=ncol(dat.norm),cex=2,label='none')
+  pdf(paste(out_folder,name,"_PCA_top500.pdf",sep=""),16,12)
+  plot.PCA(res.pca_1,axes=c(1,2),habillage=ncol(dat.norm_1),cex=1)
+  plot.PCA(res.pca_1,axes=c(1,2),habillage=ncol(dat.norm_1),cex=2,label='none')
+  plot.PCA(res.pca_1,axes=c(1,3),habillage=ncol(dat.norm_1),cex=1)
+  plot.PCA(res.pca_1,axes=c(1,3),habillage=ncol(dat.norm_1),cex=2,label='none')
+  plot.PCA(res.pca_1,axes=c(2,3),habillage=ncol(dat.norm_1),cex=1)
+  plot.PCA(res.pca_1,axes=c(2,3),habillage=ncol(dat.norm_1),cex=2,label='none')
   dev.off()
 
   #norm_1 <- norm[, grep(paste(pattern,collapse="|"), colnames(norm), value = TRUE)]
@@ -100,35 +110,35 @@ for (i in 1:dim(comps)[1]) {
   assign(paste0("resdata",i), merge(as.data.frame(eval(parse(text=paste0("res", i)))), as.data.frame(norm_1), by="row.names", sort=FALSE))
   assign(paste("resdata", i, sep = ""), eval(parse(text=paste0("resdata", i)))[,-c(4,5)]) #remove lfcSE & stat columns
   # eval(parse(text=paste0("resdata", i))) get value from variable paste0("resdata", i), resdata1, resdata2, resdata3...
-  write.csv(eval(parse(text=paste0("resdata", i))), file=paste(name,"_DEGs_all.csv",sep=''),row.names=F)
+  write.csv(eval(parse(text=paste0("resdata", i))), file=paste(out_folder,name,"_DEGs_all.csv",sep=''),row.names=F)
   n1 <- dim(subset(eval(parse(text=paste0("resdata", i))), padj<0.05))[1]
   n2 <- dim(subset(eval(parse(text=paste0("resdata", i))), padj<0.01))[1]
   if (n1 < 2000 & n1 >= 200) {
     resSig=subset(eval(parse(text=paste0("resdata", i))), padj<0.05)
-    write.csv(resSig,file=paste(name,"_DEGs_padj0.05.csv",sep=''),row.names=F)
+    write.csv(resSig,file=paste(out_folder,name,"_DEGs_padj0.05.csv",sep=''),row.names=F)
     sig_DEGs <- "p_adj < 0.05"
   }
   if (n1 >= 2000) {
     if (n2 < 2000) {
       resSig=subset(eval(parse(text=paste0("resdata", i))), padj<0.01)
-      write.csv(resSig,file=paste(name,"_DEGs_padj0.01.csv",sep=''),row.names=F)
+      write.csv(resSig,file=paste(out_folder,name,"_DEGs_padj0.01.csv",sep=''),row.names=F)
       sig_DEGs <- "p_adj < 0.01"
     } else {
-      resSig=subset(eval(parse(text=paste0("resdata", i))), padj<0.01 & abs(log2FoldChange)>1)
-      write.csv(resSig,file=paste(name,"_DEGs_padj0.01_FC2.csv",sep=''),row.names=F)
-      sig_DEGs <- "p_adj < 0.01 and |FC| > 2"
+      resSig=subset(eval(parse(text=paste0("resdata", i))), padj<0.01 & abs(log2FoldChange)>=1)
+      write.csv(resSig,file=paste(out_folder,name,"_DEGs_padj0.01_FC2.csv",sep=''),row.names=F)
+      sig_DEGs <- "p_adj < 0.01 and |FC| >= 2"
     }
   }
   if (n1 < 200 & n1 >= 20) {
     resSig=subset(eval(parse(text=paste0("resdata", i))), padj<0.1)
-    write.csv(resSig,file=paste(name,"_DEGs_padj0.1.csv",sep=''),row.names=F)
+    write.csv(resSig,file=paste(out_folder,name,"_DEGs_padj0.1.csv",sep=''),row.names=F)
     sig_DEGs <- "p_adj < 0.1"
   }
   if (n1 < 20) {
     resSig=subset(eval(parse(text=paste0("resdata", i))), pvalue<0.05)
-    write.csv(resSig,file=paste(name,"_DEGs_p0.05.csv",sep=''), row.names=F)
+    write.csv(resSig,file=paste(out_folder,name,"_DEGs_p0.05.csv",sep=''), row.names=F)
     sig_DEGs <- "p < 0.05"
   }
-  rmarkdown::render("/home/genomics/genomics/apps/RNAseq_tier2/Interactive_report_RNAseq.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"),output_dir="./")
+  rmarkdown::render("/home/genomics/genomics/apps/RNAseq_tier2/Interactive_report_RNAseq.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"),output_dir=out_folder)
   i=i+1
 };rm(i)
