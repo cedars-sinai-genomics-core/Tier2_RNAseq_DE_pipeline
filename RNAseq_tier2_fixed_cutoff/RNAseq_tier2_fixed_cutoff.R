@@ -30,6 +30,8 @@ a3=read.table(comparison,sep=',',header=F)
 #a3=read.table("AP-5782--11--08--2018_comparisons.csv",sep=',',header=F)
 #project = "AP-5782--11--08--2018"
 comps <- as.matrix(a3)
+a2 <- a2[order( a2[,3], a2[,2] ),] # sort a2 by group and then by sample name
+a1<-a1[,as.vector(a2[,1])] #reorder a1
 
 colnames(a1) <- as.matrix(a2)[,2]
 data<-a1[-grep("ERCC-",rownames(a1)),]
