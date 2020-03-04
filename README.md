@@ -4,22 +4,23 @@ $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh -h
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh -h
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh -h
 ```
-# 4 inputs are required for the script
+## Running pipeline using modified cutoff for comparisons
+### 4 inputs are required for running RNAseq_analysis.sh
 ```bash
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh count.csv sample_info.csv comparison.csv project_ID
 ```
-# Running pipeline using fixed cutoff for all comparisons
-# 6 inputs are requried for the script
+## Running pipeline using fixed cutoff for all comparisons
+### 6 inputs are requried for running RNAseq_analysis_fixed_cutoff.sh
 For example: 
-#pvalue<0.05 was used as threshold
+####pvalue<0.05 was used as threshold
 ```bash
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh count.csv sample_info.csv comparison.csv project_ID "pvalue<0.05" 1
 ```
-#p_adj<0.01 and FC>=2 were used as threshold
+####p_adj<0.01 and FC>=2 were used as threshold
 ```bash
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh count.csv sample_info.csv comparison.csv project_ID "p_adj<0.01" 2
 ```
-# for FFPE samples
+## for FFPE samples
 ```bash
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh count.csv sample_info.csv comparison.csv project_ID
 ```
