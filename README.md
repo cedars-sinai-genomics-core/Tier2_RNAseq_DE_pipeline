@@ -1,5 +1,6 @@
 # get help manual
 ```bash
+$ source activate RNAtier2
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh -h 
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh -h
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh -h
