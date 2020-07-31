@@ -33,3 +33,7 @@ A few things to check before running the pipeline:
 3. In sample_info file, Group_info (i.e. 3rd column) should be part of Sample_Name (i.e. 2nd column). Because Group_info will be used to grep what samples to include in the analysis.   
 For example, if Group_info is G1 and Sample_Name should be G1_S1 or S1_G1. If Sample_Name is S1_Group1 or Group1_S1, no results will be generated.  
 
+## Pathwat Analysis
+```bash
+/home/genomics/anaconda3/envs/RNAtier2/bin/Rscript ~/genomics/bin/Pathway_2020.R Corticotroph_KEGG.txt Corticotroph_GO_BP.txt Corticotroph_GO_CC.txt Corticotroph_GO_MF.txt Corticotroph
+```
