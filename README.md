@@ -37,3 +37,6 @@ For example, if Group_info is G1 and Sample_Name should be G1_S1 or S1_G1. If Sa
 ```bash
 /home/genomics/anaconda3/envs/RNAtier2/bin/Rscript ~/genomics/bin/Pathway_2020.R Corticotroph_KEGG.txt Corticotroph_GO_BP.txt Corticotroph_GO_CC.txt Corticotroph_GO_MF.txt Corticotroph
 ```
+1. The 1st input is KEGG.txt. 
+2. The next 3 inputs are GO terms txt (the order does not matter). 
+3. The 5th input is SampleName (i.e. the outputs will be SampleName_DE_gene_KEGG.pdf, SampleName_DE_gene_GO_term.pdf, SampleName_DEGs_KEGG_enrichment.csv, SampleName_DEGs_GO_term_enrichment.csv). 
