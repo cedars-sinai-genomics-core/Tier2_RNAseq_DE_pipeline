@@ -1,4 +1,3 @@
-#!/home/genomics/anaconda3/envs/RNAtier2/bin/Rscript
 
 # This script is a stand-alone pathway analysis script that takes several command arguments
 # you should first activate the RNAtier2 conda environment to make sure all of the necessary packages are loaded
@@ -7,6 +6,12 @@
 ### Example
 # ./Pathway.R mouse DEG_list.csv Path/To/Results
 args = commandArgs(trailingOnly=TRUE)
+suppressPackageStartupMessages({
+  library(tidyverse, quietly = T)
+  library(clusterProfiler, quietly = T)
+  library(magrittr, quietly = T)
+  library(cowplot, quietly = T)
+})
 
 # Error Checking ----------------------------------------------------------
 
@@ -16,7 +21,7 @@ if (length(args)==0) {
 }
 ### Check species options
 if(args[1]=="mouse"){
-  require(org.Mm.eg.db)
+  suppressPackageStartupMessages(require(org.Mm.eg.db, quietly=T))
   message("Species set as ", args[1])
   assign("orgDB", org.Mm.eg.db)
   meta <- c(org.Mm.eg_dbInfo()[org.Mm.eg_dbInfo()[,1]=="ORGANISM",2], 
@@ -24,7 +29,7 @@ if(args[1]=="mouse"){
             org.Mm.eg_dbInfo()[org.Mm.eg_dbInfo()[,1]=="KEGGSOURCEDATE",2],
             "mmu")
 } else if(args[1]=="human"){
-  require(org.Hs.eg.db)
+  suppressPackageStartupMessages(require(org.Hs.eg.db, quietly=T))
   message("Species set as ", args[1])
   assign("orgDB", org.Hs.eg.db)
   meta <- c(org.Hs.eg_dbInfo()[org.Hs.eg_dbInfo()[,1]=="ORGANISM",2], 
@@ -32,7 +37,7 @@ if(args[1]=="mouse"){
             org.Hs.eg_dbInfo()[org.Hs.eg_dbInfo()[,1]=="KEGGSOURCEDATE",2],
             "hsa")
 } else if(args[1]=="rat"){
-  require(org.Rn.eg.db)
+  suppressPackageStartupMessages(require(org.Rn.eg.db, quietly = T))
   message("Species set as ", args[1])
   assign("orgDB", org.Rn.eg.db)
   meta <- c(org.Rn.eg_dbInfo()[org.Rn.eg_dbInfo()[,1]=="ORGANISM",2], 
@@ -40,7 +45,7 @@ if(args[1]=="mouse"){
             org.Rn.eg_dbInfo()[org.Rn.eg_dbInfo()[,1]=="KEGGSOURCEDATE",2],
             "rno")
 } else if(args[1]=="dog"){
-  require(org.Cf.eg.db)
+  suppressPackageStartupMessages(require(org.Cf.eg.db, quietly = T))
   message("Species set as ", args[1])
   assign("orgDB", org.Cf.eg.db)
   meta <- c(org.Cf.eg_dbInfo()[org.Cf.eg_dbInfo()[,1]=="ORGANISM",2], 
@@ -50,9 +55,10 @@ if(args[1]=="mouse"){
 } else {
   stop("Species ", args[1], " not recognized. Specify human, mouse, rat, or dog.")
 }
+
 ### Check DEG format
-require(tidyverse)
-tryCatch(DEG <- read_csv(args[2]),
+tryCatch(DEG <- read_csv(args[2],
+                         col_types = cols()),
          error=function(e){
            stop("Provide a valid CSV file of DEGs.")
          })
@@ -74,9 +80,6 @@ if(is.na(args[3])){
 }
 
 # Run GO analysis ------------------------------------------------------------
-library(clusterProfiler)
-library(magrittr)
-library(cowplot)
 
 g1 <- DEG %>% 
   dplyr::select(1) %>% 
