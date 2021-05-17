@@ -1,11 +1,24 @@
-
 # This script is a stand-alone pathway analysis script that takes several command arguments
 # you should first activate the RNAtier2 conda environment to make sure all of the necessary packages are loaded
 
-
 ### Example
 # ./Pathway.R mouse DEG_list.csv Path/To/Results
+
+
+
+# Error Checking ----------------------------------------------------------
+# Conda environment
+if(system("which R", intern = T)!="/home/genomics/anaconda3/envs/RNAtier2/bin/R"){
+  message("WARNING:\nYou should activate the RNAtier2 conda environment prior to running this script.")
+}
+
+## Command Args
 args = commandArgs(trailingOnly=TRUE)
+if (length(args)==0) {
+  stop("Speficy the input DEG list, species, and (optionally) a results path.", call.=FALSE)
+}
+
+# Set up ------------------------------------------------------------------
 suppressPackageStartupMessages({
   library(tidyverse, quietly = T)
   library(clusterProfiler, quietly = T)
@@ -13,12 +26,6 @@ suppressPackageStartupMessages({
   library(cowplot, quietly = T)
 })
 
-# Error Checking ----------------------------------------------------------
-
-## Command Args
-if (length(args)==0) {
-  stop("Speficy the input DEG list, species, and (optionally) a results path.", call.=FALSE)
-}
 ### Check species options
 if(args[1]=="mouse"){
   suppressPackageStartupMessages(require(org.Mm.eg.db, quietly=T))
@@ -270,3 +277,9 @@ if(exists("k2")){
   } else
     message("No significant KEGG terms found at adjusted p<0.05.\nNo plot will be generated.")
 }
+
+# No idea why this is create, but this will remove it
+if(file.exists("./Rplots.pdf")){
+  file.remove("./Rplots.pdf")
+}
+
