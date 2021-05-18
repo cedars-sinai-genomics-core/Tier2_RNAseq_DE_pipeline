@@ -26,16 +26,16 @@ Most typically, we run the `RNAseq_analysis.sh` script. This script requires 4 i
 
 ```bash
 $ source activate RNAtier2
-$ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh \
-  Demo/demo_COUNTS.csv \
-  Demo/demo_sample_info.csv \
-  Demo/demo_comparisons.csv \
-  Demo
+$ bash /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/RNAseq_tier2/RNAseq_analysis.sh \
+  counts.csv \
+  sample_info.csv \
+  comparisons.csv \
+  project_ID
 ```
 
 This will produce several outputs:
 ```
-project_id/
+./
 ├── Group1_vs_Group2
 │   ├── Group1_vs_Group2.html
 │   ├── Group1_vs_Group2_DEGs_all.csv
@@ -48,7 +48,7 @@ project_id/
 │   ├── Group1_vs_Group2_MAplot.pdf
 │   ├── Group1_vs_Group2_PCA_top500.pdf
 │   └── Group1_vs_Group2_Volcano.pdf
-├── project_id_PCA_all_samples.pdf
+├── project_ID_PCA_all_samples.pdf
 ```
 The number of folders will match the number of comparisons specified in the `comparison.csv` file. The specific DEG lists output will depend on the number of DEGs in each category. The script will always output the `_all.csv` files but will create different filtered lists to present a manageable number of DEGs. The folder will also contain a heatmap, MA plot, PCA, and volcano plot. Finally, the folder will contain a summary html file with all of the information.
 
@@ -100,9 +100,9 @@ The pipeline is run as follows:
 
 ```bash
 $ source activate RNAtier2
-$ Rscript Pathway.R \
-  species \
-  DEG_list.csv \
+$ Rscript /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/Pathway/Pathway.R \
+  human \
+  DEG_List.csv \
   Path/To/Results
 ```
 
@@ -146,4 +146,27 @@ This will automatically generate the GO and KEGG enrichment dot plots and write 
 ├── project_ID_DEG_GO_term_enrichment.csv
 ├── project_ID_DEG_KEGG.pdf
 └── project_ID_DEG_KEGG_enrichment.csv
+```
+
+# Example
+
+```bash
+# activate the conda environment
+$ source activate RNAtier2
+# Navigate to output folder
+$ cd Demo
+$ cd mkdir Results
+$ cd Results
+# Run DEG analysis
+$ bash /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/RNAseq_tier2/RNAseq_analysis.sh \
+  ../demo_COUNTS.csv \
+  ../demo_sample_info.csv \
+  ../demo_comparisons.csv \
+  demo_results
+# Run pathway analsis
+$ cd Demo/Results/M_vs_MC
+$ Rscript /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/Pathway/Pathway.R \
+  human \
+  M_vs_MC_DEGs_padj0.05.csv \
+  Pathway_Results
 ```
