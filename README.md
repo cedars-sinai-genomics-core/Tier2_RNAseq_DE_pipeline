@@ -158,7 +158,7 @@ $ cd Demo
 $ cd mkdir Results
 $ cd Results
 # Run DEG analysis
-$ bash $TIER2/RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_Automatic.sh \
   ../demo_COUNTS.csv \
   ../demo_sample_info.csv \
   ../demo_comparisons.csv \
