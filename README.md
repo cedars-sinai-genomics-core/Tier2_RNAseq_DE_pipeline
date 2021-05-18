@@ -27,10 +27,10 @@ Most typically, we run the `RNAseq_analysis.sh` script. This script requires 4 i
 ```bash
 $ source activate RNAtier2
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh \
-  count.csv \
-  sample_info.csv \
-  comparison.csv \
-  project_ID
+  Demo/demo_COUNTS.csv \
+  Demo/demo_sample_info.csv \
+  Demo/demo_comparisons.csv \
+  Demo
 ```
 
 This will produce several outputs:
