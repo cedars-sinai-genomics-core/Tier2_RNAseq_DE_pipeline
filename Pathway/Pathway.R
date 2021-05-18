@@ -69,7 +69,7 @@ tryCatch(DEG <- read_csv(args[2],
          error=function(e){
            stop("Provide a valid CSV file of DEGs.")
          })
-if(any(grepl(DEG[1:5,]))){
+if(any(grepl(pattern = "_", x = DEG[1:5,]))){
   message("Parsing concatenated gene names into gene symbols")
   DEG %<>% 
     mutate(Row.names=str_split(Row.names, pattern = "_", simplify = T)[,2])
