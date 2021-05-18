@@ -21,7 +21,7 @@ Most typically, we run the `RNAseq_analysis.sh` script. This script requires 4 i
 - A csv file of comparisons to be made using the same Group_info names as the previous sample information sheet. The order of groups in the comparison will inform the calculation of log<sub>2</sub> fold change of expression.
 - A string specifying the project ID to name a results folder.
 
-```{bash}
+```bash
 $ source activate RNAtier2
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh \
   count.csv \
@@ -56,7 +56,7 @@ In the main project folder there is also a PCA plot with all samples include. In
 Running the pipeline with a fixed cutoff for filtering is very similar to the variable cutoff outlined above. The key difference is that it requires you to specify hard cutoffs for *both* adjusted p-value and log<sub>2</sub> fold-change.
 
 For example, to filter by an adjusted p-value less than 0.05 and a log<sub>2</sub> fold-change greater than 1:
-```
+```bash
 $ source activate RNAtier2
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh \
   count.csv \
@@ -94,7 +94,7 @@ Currently, the ClusterProfileR pipeline can perform GO and KEGG enrichments from
 
 The pipeline is run as follows:
 
-```
+```bash
 $ source activate RNAtier2
 $ Rscript Pathway.R \
   species \
