@@ -118,7 +118,7 @@ if(dim(g1)[1]>0){
   g2 <- g1 %>% 
     rowwise() %>% 
     mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
-           Concatenated=paste0(ID,"~",Description))
+           Concatenated=paste0(ID,"~",Description)) %>% 
     dplyr::arrange(pvalue) %>% 
     dplyr::select(ONTOLOGY, ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
     write_csv(file = paste0(outdir,"GO.csv"))
