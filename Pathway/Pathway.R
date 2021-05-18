@@ -121,7 +121,7 @@ if(dim(g1)[1]>0){
            Concatenated=paste0(ID,"~",Description)) %>% 
     dplyr::arrange(pvalue) %>% 
     dplyr::select(ONTOLOGY, ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
-    write_csv(file = paste0(outdir,"GO.csv"))
+    write_csv(paste0(outdir,"GO.csv"))
 } else {
   message("No enriched GO terms found.\nNo GO plots or lists will be generated.")
 }
@@ -133,7 +133,7 @@ if(dim(k1)[1]>0){
            Concatenated=paste0(ID,"~",Description)) %>% 
     dplyr::arrange(pvalue) %>% 
     dplyr::select(ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
-    write_csv(file = paste0(outdir,"KEGG.csv"))
+    write_csv(paste0(outdir,"KEGG.csv"))
 } else {
   message("No enriched KEGG terms found.\nNo KEGG plots or lists will be generated.")
 }
