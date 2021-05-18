@@ -141,7 +141,7 @@ $ Rscript /home/genomics/genomics/apps/RNAseq_tier2/Pathway/Pathway_DAVID.R \
 This will automatically generate the GO and KEGG enrichment dot plots and write lists of the enriched terms to csv files. The csv files will contain all terms regardless of significance, but the plots will be filtered to only contain those terms with a raw p-value less than 0.05.
 
 ```
-./
+project_ID/
 ├── project_ID_DEG_GO_term.pdf
 ├── project_ID_DEG_GO_term_enrichment.csv
 ├── project_ID_DEG_KEGG.pdf
