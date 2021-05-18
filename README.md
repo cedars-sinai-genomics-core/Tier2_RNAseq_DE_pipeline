@@ -9,13 +9,13 @@ source activate RNAtier2
 You can get help text for any of the DEG functions with the `-h` flag.
 ```bash
 $ source activate RNAtier2
-$ bash $TIER2/RNAseq_analysis.sh -h 
-$ bash $TIER2/RNAseq_analysis_fixed_cutoff.sh -h
-$ bash $TIER2/FFPE_RNAseq_analysis.sh -h
+$ bash $TIER2/RNAseq_Automatic.sh -h 
+$ bash $TIER2/RNAseq_Fixed_Cutoff.sh -h
+$ bash $TIER2/RNAseq_FFPE.sh -h
 ```
-### Variable Cutoff
+### Automatic Cutoff
 
-Most typically, we run the `RNAseq_analysis.sh` script. This script requires 4 inputs:
+Most typically, we run the `RNAseq_Automatic.sh` script. This script requires 4 inputs:
 
 - A count matrix produced by the Tier1 RNAseq pipeline, where rows are genes and columns are samples.
 - A csv file of sample information containing (in order)  sample_ID, Sample_Name, and Group_info for each sample to be processed. 
@@ -26,7 +26,7 @@ Most typically, we run the `RNAseq_analysis.sh` script. This script requires 4 i
 
 ```bash
 $ source activate RNAtier2
-$ bash $TIER2/RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_Automatic.sh \
   counts.csv \
   sample_info.csv \
   comparisons.csv \
@@ -56,12 +56,12 @@ In the main project folder there is also a PCA plot with all samples include. In
 
 ### Fixed Cutoff
 
-Running the pipeline with a fixed cutoff for filtering is very similar to the variable cutoff outlined above. The key difference is that it requires you to specify hard cutoffs for *both* adjusted p-value and log<sub>2</sub> fold-change.
+Running the pipeline with a fixed cutoff for filtering is very similar to the automatic cutoff outlined above. The key difference is that it requires you to specify hard cutoffs for *both* adjusted p-value and log<sub>2</sub> fold-change.
 
 For example, to filter by an adjusted p-value less than 0.05 and a log<sub>2</sub> fold-change greater than 1:
 ```bash
 $ source activate RNAtier2
-$ bash $TIER2/RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_Fixed_Cutoff.sh \
   count.csv \
   sample_info.csv \
   comparison.csv \
@@ -70,16 +70,16 @@ $ bash $TIER2/RNAseq_analysis.sh \
   1
 ```
 
-Note, the the adjusted p-value cutoff must be quoted and does not accept oter critieria to filter on. The outputs for this version of the pipeline are identical to the variable cutoff, except that the filter DEG lists will only include the pre-set criteria.
+Note, the the adjusted p-value cutoff must be quoted and does not accept other criteria to filter on. The outputs for this version of the pipeline are identical to the automatic cutoff, except that the filter DEG lists will only include the pre-set criteria.
 
 
 ### Human FFPE samples
 
-Running the pipeline for formalin-fixed paraffin-embedded (FFPE) samples is very similar to running it with the variable cutoffs. Currently this version of the pipeline only works on human samples since it depends on conversion of ENSEMBL IDs for gene symbols.
+Running the pipeline for formalin-fixed paraffin-embedded (FFPE) samples is very similar to running it with the automatic cutoffs. Currently this version of the pipeline only works on human samples since it depends on conversion of ENSEMBL IDs for gene symbols.
 
 ```bash
 $ source activate RNAtier2
-$ bash $TIER2/FFPE_RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_FFPE.sh \
   count.csv \
   sample_info.csv \
   comparison.csv \
