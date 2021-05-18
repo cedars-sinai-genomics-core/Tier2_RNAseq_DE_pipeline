@@ -9,7 +9,7 @@
 display_usage() {
 	echo -e "NAME:\n  RNAseq_analysis."
 	echo -e "\nDESCRIPTION:\n   This pipeline will use COUNT file to do doenstream differentially expressed genes (DEGs) analysis."
-	echo -e "\nUsage:\n   bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh Count_file.csv Sample_info.csv comparisons.csv "
+	echo -e "\nUsage:\n   bash $TIER2/RNAseq_tier2/RNAseq_analysis.sh Count_file.csv Sample_info.csv comparisons.csv "
     
     echo "Input options:"
     echo "   -h|--help    show this help"
@@ -29,4 +29,4 @@ fi
 
 # get PCA plots for all samples and DEGs table, interactive report for each comparison
 #/hpc/apps/R/3.4.1/bin/Rscript /common/genomics-core/data/Temp/Di_RNA_seq_test/downstream_test/RNAseq_tier2.R $1 $2 $3 $4
-Rscript /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/RNAseq_tier2/RNAseq_tier2.R $1 $2 $3 $4
+Rscript $TIER2/RNAseq_tier2/RNAseq_tier2.R $1 $2 $3 $4
