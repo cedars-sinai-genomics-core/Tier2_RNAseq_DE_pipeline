@@ -28,4 +28,4 @@ then
 fi
 
 # get PCA plots for all samples and DEGs table, interactive report for each comparison
-Rscript $TIER2/RNAseq_Automatic/RNAseq_tier2.R $1 $2 $3 $4
+Rscript $TIER2/Automatic/RNAseq_tier2.R $1 $2 $3 $4
