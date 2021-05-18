@@ -101,7 +101,7 @@ g1 <- DEG %>%
 # Run KEGG analysis -------------------------------------------------------
 k1 <- DEG %>% 
   dplyr::select(1) %>% 
-  mutate(X=AnnotationDbi::mapIds(orgDB, keys = Row.names, column = "ENTREZID", keytype = "SYMBOL", multiVals = "first")) %>% 
+  mutate(Row.names=AnnotationDbi::mapIds(orgDB, keys = Row.names, column = "ENTREZID", keytype = "SYMBOL", multiVals = "first")) %>% 
   drop_na() %>% 
   deframe() %>% 
   enrichKEGG(organism = meta[4]) %>% 
