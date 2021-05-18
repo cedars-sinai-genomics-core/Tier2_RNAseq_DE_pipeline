@@ -1,5 +1,5 @@
 #########################################################################
-# File Name: RNAseq_analysis_fixed_cutoff.sh
+# File Name: RNAseq_Fixed_Cutoff.sh
 # Author: Di Wu
 # mail: di.wu@cshs.org
 # Created Time: Feb., 2020
@@ -8,8 +8,8 @@
 #!/bin/bash
 display_usage() {
 	echo -e "NAME:\n  RNAseq_analysis."
-	echo -e "\nDESCRIPTION:\n   This pipeline will use COUNT file to do doenstream differentially expressed genes (DEGs) analysis."
-	echo -e "\nUsage:\n   bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh Count_file.csv Sample_info.csv comparisons.csv Ptoject_ID "pvalue<0.05" 1"
+	echo -e "\nDESCRIPTION:\n   This pipeline will use COUNT file to do downstream differentially expressed genes (DEGs) analysis."
+	echo -e "\nUsage:\n   bash $TIER2/RNAseq_Fixed_Cutoff.sh Count_file.csv Sample_info.csv comparisons.csv Ptoject_ID "pvalue<0.05" 1"
 
     echo "Input options:"
     echo "   -h|--help    show this help"
@@ -34,4 +34,4 @@ fi
 
 # get PCA plots for all samples and DEGs table, interactive report for each comparison
 #/hpc/apps/R/3.4.1/bin/Rscript /common/genomics-core/data/Temp/Di_RNA_seq_test/downstream_test/RNAseq_tier2.R $1 $2 $3 $4
-Rscript $TIER2/RNAseq_tier2_fixed_cutoff/RNAseq_tier2_fixed_cutoff.R $1 $2 $3 $4 $5 $6
+Rscript $TIER2/Fixed_Cutoff/RNAseq_tier2_fixed_cutoff.R $1 $2 $3 $4 $5 $6

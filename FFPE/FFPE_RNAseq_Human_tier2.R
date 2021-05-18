@@ -21,18 +21,16 @@ count_file <- args[1]
 sample_info <-args[2]
 comparison <- args[3]
 project <- args[4]
-#org <- args[5]
 a1=read.table(count_file, sep=',',header=T,row.names=1,check=F,comment.char="")
 a2=read.table(sample_info,sep=',',header=T)
 a3=read.table(comparison,sep=',',header=F)
-#a2=read.table("JL-6152--01--14--2019_sample_info.csv",sep=',',header=T)
-#a3=read.table("JL-6152--01--14--2019_comparisons.csv",sep=',',header=F)
-#project = "JL-6152--01--14--2019"
 comps <- as.matrix(a3) 
+
 # sort a2 by group and then by sample name
 a2 <- a2[order( a2[,3], a2[,2] ),]
 
 a1<-a1[,as.vector(a2[,1])]
+
 colnames(a1) <- as.matrix(a2)[,2]
 #data<-a1[-grep("ERCC-",rownames(a1)),]
 countdataraw=round(a1[rowSums(a1)>0,])

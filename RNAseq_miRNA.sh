@@ -1,5 +1,5 @@
 #########################################################################
-# File Name: RNAseq_analysis.sh
+# File Name: RNAseq_miRNA.sh
 # Author: Di Wu
 # mail: di.wu@cshs.org
 # Created Time: Feb., 2019
@@ -8,8 +8,8 @@
 #!/bin/bash
 display_usage() {
 	echo -e "NAME:\n  RNAseq_analysis."
-	echo -e "\nDESCRIPTION:\n   This pipeline will use COUNT file to do doenstream differentially expressed genes (DEGs) analysis."
-	echo -e "\nUsage:\n   bash RNAseq_analysis.sh Count_file.csv Sample_info.csv comparisons.csv "
+	echo -e "\nDESCRIPTION:\n   This pipeline will use COUNT file to do downstream differentially expressed genes (DEGs) analysis."
+	echo -e "\nUsage:\n   bash $TIER2/RNAseq_miRNA.sh Count_file.csv Sample_info.csv comparisons.csv "
     
     echo "Input options:"
     echo "   -h|--help    show this help"
