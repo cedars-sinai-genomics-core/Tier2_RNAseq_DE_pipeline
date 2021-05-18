@@ -96,10 +96,7 @@ g1 <- DEG %>%
            keyType = "SYMBOL",
            pvalueCutoff = Inf,
            qvalueCutoff = Inf) %>% 
-  data.frame() %>% 
-  rowwise() %>% 
-  mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
-         Concatenated=paste0(ID,"~",Description))
+  data.frame() 
 
 # Run KEGG analysis -------------------------------------------------------
 k1 <- DEG %>% 
@@ -109,15 +106,14 @@ k1 <- DEG %>%
   deframe() %>% 
   enrichKEGG(organism = meta[4]) %>% 
   setReadable(OrgDb = orgDB, keyType = "ENTREZID") %>% 
-  data.frame() %>% 
-  rowwise() %>% 
-  mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
-         Concatenated=paste0(ID,"~",Description))
-
+  data.frame()
 
 # Write CSV ---------------------------------------------------------------
 if(dim(g1)[1]>0){
   g2 <- g1 %>% 
+    rowwise() %>% 
+    mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
+           Concatenated=paste0(ID,"~",Description))
     dplyr::arrange(pvalue) %>% 
     dplyr::select(ONTOLOGY, ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
     write_csv(file = paste0(outdir,"GO.csv"))
@@ -126,7 +122,10 @@ if(dim(g1)[1]>0){
 }
 
 if(dim(k1)[1]>0){
-  k2 %>% k1 %>% 
+  k2 <- k1 %>% 
+    rowwise() %>% 
+    mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
+           Concatenated=paste0(ID,"~",Description)) %>% 
     dplyr::arrange(pvalue) %>% 
     dplyr::select(ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
     write_csv(file = paste0(outdir,"KEGG.csv"))
