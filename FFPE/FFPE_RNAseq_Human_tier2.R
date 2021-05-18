@@ -15,6 +15,7 @@ library(gplots)
 #library("DT",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
 #library("heatmaply",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
 rm(list=ls())
+TIER2 <- Sys.getenv("TIER2")
 #a1=read.table("JL-6152--01--14--2019_COUNTS_new.csv",sep=',',header=T,row.names=1,check=F,comment.char="")
 args=commandArgs(TRUE)
 count_file <- args[1]
@@ -141,7 +142,7 @@ for (i in 1:dim(comps)[1]) {
     write.csv(resSig,file=paste(name,"_DEGs_p0.05.csv",sep=''), row.names=F)
     sig_DEGs <- "p < 0.05"
   }
-  rmarkdown::render("/home/genomics/genomics/apps/RNAseq_tier2/Interactive_report_RNAseq.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"), output_dir="./")
+  rmarkdown::render(paste0(TIER2,"FFPE/Interactive_report_RNAseq.Rmd"), params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"), output_dir="./")
   i=i+1 
 };rm(i)
 

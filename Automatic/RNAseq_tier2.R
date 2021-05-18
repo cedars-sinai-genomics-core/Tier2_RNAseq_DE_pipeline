@@ -18,9 +18,18 @@ count_file <- args[1]
 sample_info <-args[2]
 comparison <- args[3]
 project <- args[4]
-a1=read.table(count_file, sep=',',header=T,row.names=1,check=F,comment.char="")
-a2=read.table(sample_info,sep=',',header=T)
-a3=read.table(comparison,sep=',',header=F)
+a1=read.table(count_file, 
+              sep=',',
+              header=T,
+              row.names=1,
+              check=F,
+              comment.char="")
+a2=read.table(sample_info,
+              sep=',',
+              header=T)
+a3=read.table(comparison,
+              sep=',',
+              header=F)
 comps <- as.matrix(a3)
 
 # sort a2 by group and then by sample name
@@ -34,18 +43,21 @@ countdataraw=round(data[rowSums(data)>0,])
 countdata<-as.matrix(countdataraw)
 dim(countdata)
 
-
 condition<-factor(as.matrix(a2)[,3])
-coldata <- data.frame(row.names=colnames(countdata), condition)
-dds <- DESeqDataSetFromMatrix(countData=countdata, colData=coldata, design=~condition)
-dds=DESeq(dds,minReplicatesForReplace = 50)
+coldata <- data.frame(row.names=colnames(countdata), 
+                      condition)
+dds <- DESeqDataSetFromMatrix(countData=countdata, 
+                              colData=coldata, 
+                              design=~condition)
+dds <- DESeq(dds,
+             minReplicatesForReplace = 50)
 
 #ubstitute DESeq() with more iterations
 #dds <- estimateSizeFactors(dds)
 #dds <- estimateDispersions(dds)
 #dds <- nbinomWaldTest(dds, maxit = 500)
 
-norm=counts(dds,normalized = T)
+norm <- counts(dds,normalized = T)
 
 #### get PCA output for all samples as PDF files ####
 rld=rlog(dds, blind=TRUE)

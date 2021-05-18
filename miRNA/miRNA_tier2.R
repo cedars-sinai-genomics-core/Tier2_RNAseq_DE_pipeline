@@ -10,6 +10,7 @@ library("heatmaply")
 library("gplots")
 
 rm(list=ls())
+TIER2 <- Sys.getenv("TIER2")
 #a1=read.table("CVS_Spontaneous_UMIs.csv",sep=',',header=T,row.names=1,check=F,comment.char="")
 args=commandArgs(TRUE)
 count_file <- args[1]
@@ -143,7 +144,7 @@ for (i in 1:dim(comps)[1]) {
     write.csv(resSig,file=paste(out_folder,name,"_DE_miRNAs_p0.05.csv",sep=''), row.names=F)
     sig_DEGs <- "p < 0.05"
   }
-  rmarkdown::render("$TIER2/miRNA/Interactive_report_miRNAseq.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"), output_dir=out_folder)
+  rmarkdown::render(paste0(TIER2,"/miRNA/Interactive_report_miRNAseq.Rmd"), params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"), output_dir=out_folder)
   i=i+1 
 };rm(i)
 

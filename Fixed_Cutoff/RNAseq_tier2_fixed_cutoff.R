@@ -14,6 +14,7 @@ library(gplots)
 #library("DT",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
 #library("heatmaply",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
 rm(list=ls())
+TIER2 <- Sys.getenv("TIER2")
 #a1=read.table("AP-5782--11--08--2018_COUNTS.csv",sep=',',header=T,row.names=1,check=F,comment.char="")
 args=commandArgs(TRUE)
 count_file <- args[1]
@@ -132,6 +133,6 @@ for (i in 1:dim(comps)[1]) {
     write.csv(resSig,file=paste(out_folder, name,"_DEGs_",sig_DEGs_padj,"_FC",sig_DEGs_FC,".csv",sep=''),row.names=F)
   }
 
-  rmarkdown::render("$TIER2/RNAseq_tier2_fixed_cutoff/Interactive_report_RNAseq_fixed_cutoff.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project, cutoff1 = sig_DEGs_padj, cutoff2 = sig_DEGs_FC), output_file = paste0(name, ".html"),output_dir=out_folder)
+  rmarkdown::render(paste0(TIER2,"/Fixed_Cutoff/Interactive_report_RNAseq_fixed_cutoff.Rmd"), params = list(data = a1, info = a2, comparison = a3, project = project, cutoff1 = sig_DEGs_padj, cutoff2 = sig_DEGs_FC), output_file = paste0(name, ".html"),output_dir=out_folder)
   i=i+1
 };rm(i)
