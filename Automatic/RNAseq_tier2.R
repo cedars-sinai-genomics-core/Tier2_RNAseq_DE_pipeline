@@ -11,6 +11,7 @@ suppressPackageStartupMessages({
 })
 # Clean up
 rm(list=ls())
+TIER2 <- Sys.getenv("TIER2")
 # Read in data
 args=commandArgs(TRUE)
 count_file <- args[1]
@@ -129,6 +130,6 @@ for (i in 1:dim(comps)[1]) {
     write.csv(resSig,file=paste(out_folder,name,"_DEGs_p0.05.csv",sep=''), row.names=F)
     sig_DEGs <- "p < 0.05"
   }
-  rmarkdown::render("$TIER2/RNAseq_tier2/Interactive_report_RNAseq.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"),output_dir=out_folder)
+  rmarkdown::render(paste0(TIER2,"/RNAseq_tier2/Interactive_report_RNAseq.Rmd"), params = list(data = a1, info = a2, comparison = a3, project = project), output_file = paste0(name, ".html"),output_dir=out_folder)
   i=i+1
 };rm(i)
