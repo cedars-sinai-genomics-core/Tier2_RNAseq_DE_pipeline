@@ -29,4 +29,4 @@ fi
 
 # get PCA plots for all samples and DEGs table, interactive report for each comparison
 #/hpc/apps/R/3.4.1/bin/Rscript /common/genomics-core/data/Temp/Di_RNA_seq_test/downstream_test/RNAseq_tier2.R $1 $2 $3 $4
-/usr/bin/Rscript /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_Human_tier2.R $1 $2 $3 $4
+/usr/bin/Rscript $TIER2/FFPE_RNAset_tier2/FFPE_RNAseq_Human_tier2.R $1 $2 $3 $4
