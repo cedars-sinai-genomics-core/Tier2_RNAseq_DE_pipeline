@@ -132,6 +132,6 @@ for (i in 1:dim(comps)[1]) {
     write.csv(resSig,file=paste(out_folder, name,"_DEGs_",sig_DEGs_padj,"_FC",sig_DEGs_FC,".csv",sep=''),row.names=F)
   }
 
-  rmarkdown::render("/home/genomics/genomics/apps/RNAseq_tier2/Interactive_report_RNAseq_fixed_cutoff.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project, cutoff1 = sig_DEGs_padj, cutoff2 = sig_DEGs_FC), output_file = paste0(name, ".html"),output_dir=out_folder)
+  rmarkdown::render("$TIER2/RNAseq_tier2_fixed_cutoff/Interactive_report_RNAseq_fixed_cutoff.Rmd", params = list(data = a1, info = a2, comparison = a3, project = project, cutoff1 = sig_DEGs_padj, cutoff2 = sig_DEGs_FC), output_file = paste0(name, ".html"),output_dir=out_folder)
   i=i+1
 };rm(i)
