@@ -1,20 +1,17 @@
-library(DESeq2)
-library(plotly)
-library("FactoMineR")
-library("rmarkdown")
-library("vegan")
-library("manhattanly")
-library("DT")
-library("heatmaply")
-library(gplots)
-#library("FactoMineR",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
-#library("rmarkdown",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
-#library("vegan",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
-#library("manhattanly",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
-#library("DT",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
-#library("heatmaply",lib.loc="/home/wud3/R/x86_64-pc-linux-gnu-library/3.4/")
+suppressPackageStartupMessages({
+  library(DESeq2)
+  library(plotly)
+  library("FactoMineR")
+  library("rmarkdown")
+  library("vegan")
+  library("manhattanly")
+  library("DT")
+  library("heatmaply")
+  library(gplots)
+})
+# Clean up
 rm(list=ls())
-#a1=read.table("AP-5782--11--08--2018_COUNTS.csv",sep=',',header=T,row.names=1,check=F,comment.char="")
+# Read in data
 args=commandArgs(TRUE)
 count_file <- args[1]
 sample_info <-args[2]
@@ -23,10 +20,8 @@ project <- args[4]
 a1=read.table(count_file, sep=',',header=T,row.names=1,check=F,comment.char="")
 a2=read.table(sample_info,sep=',',header=T)
 a3=read.table(comparison,sep=',',header=F)
-#a2=read.table("AP-5782--11--08--2018_sample_info.csv",sep=',',header=T)
-#a3=read.table("AP-5782--11--08--2018_comparisons.csv",sep=',',header=F)
-#project = "AP-5782--11--08--2018"
 comps <- as.matrix(a3)
+
 # sort a2 by group and then by sample name
 a2 <- a2[order( a2[,3], a2[,2] ),]
 
@@ -53,26 +48,21 @@ norm=counts(dds,normalized = T)
 
 #### get PCA output for all samples as PDF files ####
 rld=rlog(dds, blind=TRUE)
-rv <- rowVars(assay(rld)) # caluculate row variance
+rv <- rowVars(assay(rld)) # calcculate row variance
 select <- order(rv, decreasing = TRUE)[seq_len(min(500,length(rv)))]
 dat.norm<-t(assay(rld)[select, ])
 dat.norm<-data.frame(dat.norm,condition)
 res.pca=PCA(dat.norm,ncp=5,scale.unit=T,graph=F,quali.sup=ncol(dat.norm))
 
+# Save PCA
 pdf(paste("./",project,"_PCA_all_samples.pdf",sep=""),16,12)
 plot.PCA(res.pca,axes=c(1,2),habillage=ncol(dat.norm),cex=1)
-#dev.off()
 plot.PCA(res.pca,axes=c(1,2),habillage=ncol(dat.norm),cex=2,label='none')
-#pdf(paste(project,"_PCA1vs3.pdf",sep=""),16,12)
 plot.PCA(res.pca,axes=c(1,3),habillage=ncol(dat.norm),cex=1)
-#dev.off()
 plot.PCA(res.pca,axes=c(1,3),habillage=ncol(dat.norm),cex=2,label='none')
-#pdf(paste(project,"_PCA2vs3.pdf",sep=""),16,12)
 plot.PCA(res.pca,axes=c(2,3),habillage=ncol(dat.norm),cex=1)
-#dev.off()
 plot.PCA(res.pca,axes=c(2,3),habillage=ncol(dat.norm),cex=2,label='none')
 dev.off()
-#dev.off()
 
 #out_folder <- paste0(getwd(),"/")
 ##################################### get DEGs list, interative plot, and  pathway plot for each comparison ##############################################
