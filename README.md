@@ -1,5 +1,8 @@
 # Set Up
-All of the analyses in this repository should be run on Titan and they all require you to first activate the RNATier2 conda environment to ensure that all of the required R packages are loaded.
+All of the analyses in this repository should be *run on Titan* and they all require you to first activate the RNATier2 conda environment to ensure that all of the required R packages are loaded.
+```bash
+source activate RNAtier2
+```
 
 ## DEG Analysis
 
@@ -75,6 +78,7 @@ Note, the the adjusted p-value cutoff must be quoted and does not accept oter cr
 Running the pipeline for formalin-fixed paraffin-embedded (FFPE) samples is very similar to running it with the variable cutoffs. Currently this version of the pipeline only works on human samples since it depends on conversion of ENSEMBL IDs for gene symbols.
 
 ```bash
+$ source activate RNAtier2
 $ bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh \
   count.csv \
   sample_info.csv \
