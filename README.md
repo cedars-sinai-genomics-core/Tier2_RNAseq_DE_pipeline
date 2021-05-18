@@ -9,9 +9,9 @@ source activate RNAtier2
 You can get help text for any of the DEG functions with the `-h` flag.
 ```bash
 $ source activate RNAtier2
-$ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh -h 
-$ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis_fixed_cutoff.sh -h
-$ bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh -h
+$ bash $TIER2/RNAseq_analysis.sh -h 
+$ bash $TIER2/RNAseq_analysis_fixed_cutoff.sh -h
+$ bash $TIER2/FFPE_RNAseq_analysis.sh -h
 ```
 ### Variable Cutoff
 
@@ -26,7 +26,7 @@ Most typically, we run the `RNAseq_analysis.sh` script. This script requires 4 i
 
 ```bash
 $ source activate RNAtier2
-$ bash /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/RNAseq_tier2/RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_analysis.sh \
   counts.csv \
   sample_info.csv \
   comparisons.csv \
@@ -61,7 +61,7 @@ Running the pipeline with a fixed cutoff for filtering is very similar to the va
 For example, to filter by an adjusted p-value less than 0.05 and a log<sub>2</sub> fold-change greater than 1:
 ```bash
 $ source activate RNAtier2
-$ bash /home/genomics/genomics/apps/RNAseq_tier2/RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_analysis.sh \
   count.csv \
   sample_info.csv \
   comparison.csv \
@@ -79,7 +79,7 @@ Running the pipeline for formalin-fixed paraffin-embedded (FFPE) samples is very
 
 ```bash
 $ source activate RNAtier2
-$ bash /home/genomics/genomics/apps/RNAseq_tier2/FFPE_RNAseq_analysis.sh \
+$ bash $TIER2/FFPE_RNAseq_analysis.sh \
   count.csv \
   sample_info.csv \
   comparison.csv \
@@ -100,7 +100,7 @@ The pipeline is run as follows:
 
 ```bash
 $ source activate RNAtier2
-$ Rscript /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/Pathway/Pathway.R \
+$ Rscript $TIER2/Pathway/Pathway.R \
   human \
   DEG_List.csv \
   Path/To/Results
@@ -130,7 +130,7 @@ After the GO and KEGG results have been downloaded from the DAVID webserver, run
 
 ```
 $ source activate RNAtier2
-$ Rscript /home/genomics/genomics/apps/RNAseq_tier2/Pathway/Pathway_DAVID.R \
+$ Rscript $TIER2/Pathway/Pathway_DAVID.R \
   KEGG.txt \
   GO_BP.txt \
   GO_CC.txt \
@@ -158,14 +158,14 @@ $ cd Demo
 $ cd mkdir Results
 $ cd Results
 # Run DEG analysis
-$ bash /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/RNAseq_tier2/RNAseq_analysis.sh \
+$ bash $TIER2/RNAseq_analysis.sh \
   ../demo_COUNTS.csv \
   ../demo_sample_info.csv \
   ../demo_comparisons.csv \
   demo_results
 # Run pathway analsis
 $ cd Demo/Results/M_vs_MC
-$ Rscript /home/genomics/genomics/apps/Tier2_RNAseq_DE_pipeline/Pathway/Pathway.R \
+$ Rscript $TIER2/Pathway/Pathway.R \
   human \
   M_vs_MC_DEGs_padj0.05.csv \
   Pathway_Results
