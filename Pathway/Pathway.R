@@ -117,10 +117,9 @@ k1 <- DEG %>%
 if(dim(g1)[1]>0){
   g2 <- g1 %>% 
     rowwise() %>% 
-    mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
-           Concatenated=paste0(ID,"~",Description)) %>% 
+    mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio)))) %>% 
     dplyr::arrange(pvalue) %>% 
-    dplyr::select(ONTOLOGY, ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
+    dplyr::select(ONTOLOGY, ID, Description, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
     write_csv(paste0(outdir,"GO.csv"))
 } else {
   message("No enriched GO terms found.\nNo GO plots or lists will be generated.")
@@ -129,10 +128,9 @@ if(dim(g1)[1]>0){
 if(dim(k1)[1]>0){
   k2 <- k1 %>% 
     rowwise() %>% 
-    mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio))),
-           Concatenated=paste0(ID,"~",Description)) %>% 
+    mutate(Fold_Enrichment_Score=(eval(parse(text=GeneRatio)) / eval(parse(text=BgRatio)))) %>% 
     dplyr::arrange(pvalue) %>% 
-    dplyr::select(ID, Description, Concatenated, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
+    dplyr::select(ID, Description, Fold_Enrichment_Score, Count, pvalue, p.adjust, geneID) %T>% 
     write_csv(paste0(outdir,"KEGG.csv"))
 } else {
   message("No enriched KEGG terms found.\nNo KEGG plots or lists will be generated.")
@@ -144,6 +142,8 @@ if(exists("g2")){
   # raw pvalue
   g3 <- g2 %>% 
     dplyr::filter(pvalue<0.05) %>% 
+    mutate(Concatenated = paste0(ID,"~",Description)) %>% 
+    mutate(Concatenated = str_trunc(Concatenated, 60)) %>% 
     mutate(Concatenated = factor(Concatenated,
                                  levels = .$Concatenated[order(-.$pvalue)])) 
   if(dim(g3)[1]>0){
@@ -170,7 +170,7 @@ if(exists("g2")){
         linetype="solid"))
     ggsave2(filename = paste0(outdir,"GO_p0.05.pdf"),
             height=dim(g3)[1]*0.25+2.5,
-            width=20,
+            width=10,
             limitsize = F)
   } else {
     message("No significant GO terms found at p<0.05.\nNo plots will be generated.")
@@ -179,6 +179,8 @@ if(exists("g2")){
   # adjusted pvalue
   g4 <- g2 %>% 
     dplyr::filter(p.adjust<0.05) %>% 
+    mutate(Concatenated = paste0(ID,"~",Description)) %>% 
+    mutate(Concatenated = str_trunc(Concatenated, 60)) %>% 
     mutate(Concatenated = factor(Concatenated,
                                  levels = .$Concatenated[order(-.$p.adjust)])) 
   if(dim(g4)[1]>0){
@@ -206,7 +208,7 @@ if(exists("g2")){
             linetype="solid"))
     ggsave2(filename = paste0(outdir,"GO_padj0.05.pdf"),
             height=dim(g4)[1]*0.25+2.5,
-            width=20,
+            width=10,
             limitsize = F)
   } else
     message("No significant GO terms found at adjusted p<0.05.\nNo plot will be generated.")
@@ -218,6 +220,8 @@ if(exists("k2")){
   # raw pvalue
   k3 <- k2 %>% 
     dplyr::filter(pvalue<0.05) %>% 
+    mutate(Concatenated = paste0(ID,"~",Description)) %>% 
+    mutate(Concatenated = str_trunc(Concatenated, 60)) %>% 
     mutate(Concatenated = factor(Concatenated,
                                  levels = .$Concatenated[order(-.$pvalue)])) 
   if(dim(k3)[1]>0){
@@ -242,7 +246,7 @@ if(exists("k2")){
         linetype="solid"))
     ggsave2(filename = paste0(outdir,"KEGG_p0.05.pdf"),
             height=dim(k3)[1]*0.25+2.5,
-            width=20,
+            width=10,
             limitsize = F)
   } else {
     message("No significant KEGG terms found at p<0.05.\nNo plots will be generated.")
@@ -251,6 +255,8 @@ if(exists("k2")){
   # adjusted pvalue
   k4 <- k2 %>% 
     dplyr::filter(p.adjust<0.05) %>% 
+    mutate(Concatenated = paste0(ID,"~",Description)) %>% 
+    mutate(Concatenated = str_trunc(Concatenated, 60)) %>% 
     mutate(Concatenated = factor(Concatenated,
                                  levels = .$Concatenated[order(-.$p.adjust)])) 
   if(dim(k4)[1]>0){
@@ -276,7 +282,7 @@ if(exists("k2")){
         linetype="solid"))
     ggsave2(filename = paste0(outdir,"KEGG_padj0.05.pdf"),
             height=dim(g4)[1]*0.25+2.5,
-            width=20,
+            width=10,
             limitsize = F)
   } else
     message("No significant KEGG terms found at adjusted p<0.05.\nNo plot will be generated.")
