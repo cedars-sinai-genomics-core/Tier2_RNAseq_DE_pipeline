@@ -88,11 +88,11 @@ $ bash $TIER2/RNAseq_FFPE.sh \
 
 ## Pathway Analysis
 
-We have upgraded our pathway analysis script to move away from [DAVID](https://david.ncifcrf.gov/) in favor of [ClusterProfileR](https://yulab-smu.top/clusterProfiler-book/), an R package that draws on other more frequently updated databases. ClusterProfileR is also more high throughput and will allow for gene set enrichment analysis in addition to our more standard GO and KEGG enrichment analyses.
+We have upgraded our pathway analysis  to move away from [DAVID](https://david.ncifcrf.gov/) and [GSEA](https://www.gsea-msigdb.org/gsea/index.jsp) in favor of [ClusterProfileR](https://yulab-smu.top/clusterProfiler-book/), an R package that draws on other more frequently updated databases and is also more high throughput.
 
-For project that were started before May 2021, please continue to use DAVID to ensure continuity with previous results. For all newer projects, use the ClusterProfileR analysis pipeline.
+For projects that were started before May 2021, please continue to use DAVID to ensure continuity with previous results. For all newer projects, use the ClusterProfileR analysis pipelines.
 
-### ClusterProfileR Pipeline
+### ClusterProfileR GO and KEGG Enrichment
 
 Currently, the ClusterProfileR pipeline can perform GO and KEGG enrichments from four species (human, mouse, rat, and dog). It was designed to take the any of the DEG lists from our standard RNAtier2 pipeline as inputs, but it can also operate on on csv file contained gene symbols in the first column. Note that this pathway analysis pipeline does not filter the input DEG list, so passing in the `_DEGs_all.csv` output is likely to produce noise results if there are many genes.
 
@@ -101,7 +101,7 @@ The pipeline is run as follows:
 ```bash
 $ source activate RNAtier2
 $ Rscript $TIER2/Pathway/Pathway.R \
-  human \
+  species \
   DEG_List.csv \
   Path/To/Results
 ```
@@ -124,11 +124,34 @@ Path/To/Results/
 
 The `GO.csv` and `KEGG.csv` files will contain the unfiltered list of term names, ID, ontologies (for GO terms), fold enrichment scores, gene names, and gene counts. For both GO and KEGG, the pipeline will produce a dot plot filtered by either raw p-value<0.05 `p0.05.pdf` or adjusted p-value<0.05 `padj0.05.pdf`. If any of these files would be blank or contain no terms, the pipeline will print a warning and not create the file.
 
+### ClusterProfileR GSEA
+
+Although GSEA can be run with any set of genes, we currently only support GSEA of GO terms. In contrast to the GO and KEGG enrichment analysis, GSEA also requires information on log fold change of expression in order to rank the genes. This script replaces the [GSEA software](https://www.gsea-msigdb.org/gsea/index.jsp) we had used previously. The pipeline will attempt to locate the column, searching for the first column whose name contains the word `log`. This can be overridden by including a column index number instead.
+
+```bash
+$ source activate RNAtier2
+$ Rscript $TIER2/Pathway/GSEA.R \
+  species \
+  DEG_List.csv \
+  Pathway/To/Results \
+  2 # optional column index for log fold change
+```
+
+The pipeline produces up to three output files:
+
+```
+Path/To/Results/
+├── GSEA.csv
+├── GSEA_p0.05.pdf
+└── GSEA_padj0.05.pdf
+```
+
+
 ### DAVID Figure Generation (Prior to May 2021)
 
 After the GO and KEGG results have been downloaded from the DAVID webserver, run the figure generation script as follows:
 
-```
+```bash
 $ source activate RNAtier2
 $ Rscript $TIER2/Pathway/Pathway_DAVID.R \
   KEGG.txt \
@@ -163,9 +186,14 @@ $ bash $TIER2/RNAseq_Automatic.sh \
   ../demo_sample_info.csv \
   ../demo_comparisons.csv \
   demo_results
-# Run pathway analsis
+# Run pathway analysis
 $ cd Demo/Results/M_vs_MC
 $ Rscript $TIER2/Pathway/Pathway.R \
+  human \
+  M_vs_MC_DEGs_padj0.05.csv \
+  Pathway_Results
+# Run GSEA analysis
+$ Rscript $TIER2/Pathway/GSEA.R \
   human \
   M_vs_MC_DEGs_padj0.05.csv \
   Pathway_Results
