@@ -161,7 +161,7 @@ if(exists("g2")){
       labs(x="Fold Enrichment",
            y="Term",
            title="Enriched GO Terms",
-           caption=paste0(meta[1],", Sourced: ", meta[2])) +
+           caption=bquote(italic(.(meta[1]))*', Sourced:'~.(meta[2]))) +
       theme_minimal_grid() +
       theme(strip.background = element_rect(
         color="black",
@@ -197,8 +197,8 @@ if(exists("g2")){
           labs(x="Fold Enrichment",
                y="Term",
                title="Enriched GO Terms",
-               caption=paste0(meta[1],", Sourced: ", meta[2])) +
-          theme_minimal_grid() +
+               caption=bquote(italic(.(meta[1]))*', Sourced:'~.(meta[2]))) +
+      theme_minimal_grid() +
           theme(strip.background = element_rect(
             color="black",
             fill="#CCCCCC",
@@ -233,7 +233,7 @@ if(exists("k2")){
       labs(x="Fold Enrichment",
            y="Term",
            title="Enriched KEGG Terms",
-           caption=paste0(meta[1],", Sourced: ", meta[3])) +
+           caption=bquote(italic(.(meta[1]))*', Sourced:'~.(meta[3]))) +
       theme_minimal_grid() +
       theme(strip.background = element_rect(
         color="black",
@@ -267,7 +267,7 @@ if(exists("k2")){
       labs(x="Fold Enrichment",
            y="Term",
            title="Enriched KEGG Terms",
-           caption=paste0(meta[1],", Sourced: ", meta[3])) +
+           caption=bquote(italic(.(meta[1]))*', Sourced:'~.(meta[3]))) +
       theme_minimal_grid() +
       theme(strip.background = element_rect(
         color="black",
