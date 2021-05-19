@@ -76,8 +76,9 @@ if(any(grepl(pattern = "_", x = DEG[1:5,]))){
     mutate(Row.names=str_split(Row.names, pattern = "_", simplify = T)[,2])
 }
 ### Find log fold change column
-if(!is.na(as.numeric(args[4]))){
+if(!is.na(as.integer(args[4]))){
   message("Using user-specified column ", args[4]," as the log fold change column for GSEA.")
+  LFC_index <- as.integer(args[4])
 } else if(any(grepl(pattern = "log", colnames(DEG)))){
   LFC_index <- grep(pattern = "log", colnames(DEG))[1]
   LFC_name <- grep(pattern = "log", colnames(DEG), value = T)[1]
