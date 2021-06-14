@@ -106,6 +106,7 @@ g1 <- DEG %>%
 # Run KEGG analysis -------------------------------------------------------
 k1 <- DEG %>% 
   dplyr::select(1) %>% 
+  rename_at(1, ~"Row.names") %>% 
   mutate(Row.names=AnnotationDbi::mapIds(orgDB, keys = Row.names, column = "ENTREZID", keytype = "SYMBOL", multiVals = "first")) %>% 
   drop_na() %>% 
   deframe() %>% 
@@ -281,7 +282,7 @@ if(exists("k2")){
         size=1,
         linetype="solid"))
     ggsave2(filename = paste0(outdir,"KEGG_padj0.05.pdf"),
-            height=dim(g4)[1]*0.25+2.5,
+            height=dim(k4)[1]*0.25+2.5,
             width=10,
             limitsize = F)
   } else
