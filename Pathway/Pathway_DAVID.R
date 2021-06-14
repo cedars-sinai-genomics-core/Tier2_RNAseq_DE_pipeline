@@ -89,6 +89,6 @@ ggplot(data[data$pvalue<0.05,],
 
 # Save
 ggsave2(filename = paste0(args[5], "_DEG_GO_term.pdf"),
-        width=15,
+        width=2+max(nchar(as.character(data[data$pvalue<0.05,1])))*0.1,
         height=1+dim(data)[1]*.25,
         limitsize = FALSE)
